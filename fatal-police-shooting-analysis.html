@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="" />
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://shohenwater.github.io/theme/stylesheet/style.min.css">
+
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="https://shohenwater.github.io/theme/pygments/github.min.css">
+
+
+  <link rel="stylesheet" type="text/css" href="https://shohenwater.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://shohenwater.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://shohenwater.github.io/theme/font-awesome/css/solid.css">
+
+
+
+
+
+
+
+<meta name="author" content="Scott Hohenwater" />
+<meta name="description" content="I chose this data set as the subject has been in the news a lot of recent. I have no intent to make any comment on the politics and societal factors as there are plenty of people who are more knowledgeable on these subjects. My goal is to go through …" />
+<meta name="keywords" content="">
+
+
+<meta property="og:site_name" content="Scott Hohenwater's Data Blog"/>
+<meta property="og:title" content="Fatal Police Shooting Analysis"/>
+<meta property="og:description" content="I chose this data set as the subject has been in the news a lot of recent. I have no intent to make any comment on the politics and societal factors as there are plenty of people who are more knowledgeable on these subjects. My goal is to go through …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://shohenwater.github.io/fatal-police-shooting-analysis.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2020-08-05 00:00:00-05:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://shohenwater.github.io/author/scott-hohenwater.html">
+<meta property="article:section" content="Projects"/>
+<meta property="og:image" content="">
+
+  <title>Scott Hohenwater's Data Blog &ndash; Fatal Police Shooting Analysis</title>
+
+</head>
+<body class="light-theme">
+  <aside>
+    <div>
+      <a href="https://shohenwater.github.io">
+        <img src="https://shohenwater.github.io/theme/img/profile.png" alt="" title="">
+      </a>
+
+      <h1>
+        <a href="https://shohenwater.github.io"></a>
+      </h1>
+
+
+
+      <nav>
+        <ul class="list">
+
+
+              <li>
+                <a target="_self"
+                   href="https://shohenwater.github.io/pages/about.html#about">
+                  About
+                </a>
+              </li>
+              <li>
+                <a target="_self"
+                   href="https://shohenwater.github.io/pages/home-page.html#home-page">
+                  Home Page
+                </a>
+              </li>
+
+        </ul>
+      </nav>
+
+      <ul class="social">
+          <li>
+            <a  class="sc-LinkedIn" href="https://www.linkedin.com/in/scotthohenwater/" target="_blank">
+              <i class="fab fa-LinkedIn"></i>
+            </a>
+          </li>
+      </ul>
+    </div>
+
+  </aside>
+  <main>
+
+
+<article class="single">
+  <header>
+      
+    <h1 id="fatal-police-shooting-analysis">Fatal Police Shooting Analysis</h1>
+    <p>
+      Posted on Wed 05 August 2020 in <a href="https://shohenwater.github.io/category/projects.html">Projects</a>
+
+    </p>
+  </header>
+
+
+  <div>
+    <p>I chose this data set as the subject has been in the news a lot of recent. I have no intent to make any comment on the politics and societal factors as there are plenty of people who are more knowledgeable on these subjects. My goal is to go through the data and find points of interest where further discussion and research can be done.</p>
+<p>Initializing data</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">as</span> <span class="nn">smf</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;C:/Users/Scott/Downloads/723010_1257097_bundle_archive/fatal-police-shootings-data.csv&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">dtypes</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+
+
+<p>A little cleaning to get the data ready.</p>
+<div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">gender</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">gender</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">race</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">race</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">races</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="s1">&#39;Asian&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span><span class="s1">&#39;Black&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span><span class="s1">&#39;Hispanic&#39;</span><span class="p">,</span><span class="s1">&#39;N&#39;</span><span class="p">:</span><span class="s1">&#39;Native&#39;</span><span class="p">,</span><span class="s1">&#39;O&#39;</span><span class="p">:</span><span class="s1">&#39;Other&#39;</span><span class="p">,</span><span class="s1">&#39;W&#39;</span><span class="p">:</span><span class="s1">&#39;White&#39;</span><span class="p">}</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">races</span><span class="p">)</span>
+<span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+</pre></div>
+
+
+<p>First thing I want to look at are the basic demographics of the people killed and the information around the incidents in these fatalities.</p>
+<p>First I want to look at the gender data given.</p>
+<div class="highlight"><pre><span></span><span class="n">gender</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">gender</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">([</span><span class="s1">&#39;M&#39;</span><span class="p">,</span><span class="s1">&#39;F&#39;</span><span class="p">],</span><span class="n">gender</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.4</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.6</span><span class="p">,</span><span class="mf">0.7</span><span class="p">,</span><span class="mf">0.8</span><span class="p">,</span><span class="mf">0.9</span><span class="p">,</span><span class="mf">1.0</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="s1">&#39;10%&#39;</span><span class="p">,</span><span class="s1">&#39;20%&#39;</span><span class="p">,</span><span class="s1">&#39;30%&#39;</span><span class="p">,</span><span class="s1">&#39;40%&#39;</span><span class="p">,</span><span class="s1">&#39;50%&#39;</span><span class="p">,</span><span class="s1">&#39;60%&#39;</span><span class="p">,</span><span class="s1">&#39;70%&#39;</span><span class="p">,</span><span class="s1">&#39;80%&#39;</span><span class="p">,</span><span class="s1">&#39;90%&#39;</span><span class="p">,</span><span class="s1">&#39;100%&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_8_0.png"></p>
+<p>Well over 90% of those killed have been male. Based on my conceptions beforehand, I thought there was going to be a large gap. I am  surprised on the exact size of the gap.</p>
+<p>Next I want to look at the distribution of ages of those involved.</p>
+<div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="nv">C</span>:\<span class="nv">Users</span>\<span class="nv">Scott</span>\<span class="nv">Anaconda3</span>\<span class="nv">lib</span>\<span class="nv">site</span><span class="o">-</span><span class="nv">packages</span>\<span class="nv">numpy</span>\<span class="nv">lib</span>\<span class="nv">histograms</span>.<span class="nv">py</span>:<span class="mi">824</span>: <span class="nv">RuntimeWarning</span>: <span class="nv">invalid</span> <span class="nv">value</span> <span class="nv">encountered</span> <span class="nv">in</span> <span class="nv">greater_equal</span>
+  <span class="nv">keep</span> <span class="o">=</span> <span class="ss">(</span><span class="nv">tmp_a</span> <span class="o">&gt;=</span> <span class="nv">first_edge</span><span class="ss">)</span>
+<span class="nv">C</span>:\<span class="nv">Users</span>\<span class="nv">Scott</span>\<span class="nv">Anaconda3</span>\<span class="nv">lib</span>\<span class="nv">site</span><span class="o">-</span><span class="nv">packages</span>\<span class="nv">numpy</span>\<span class="nv">lib</span>\<span class="nv">histograms</span>.<span class="nv">py</span>:<span class="mi">825</span>: <span class="nv">RuntimeWarning</span>: <span class="nv">invalid</span> <span class="nv">value</span> <span class="nv">encountered</span> <span class="nv">in</span> <span class="nv">less_equal</span>
+  <span class="nv">keep</span> <span class="o">&amp;=</span> <span class="ss">(</span><span class="nv">tmp_a</span> <span class="o">&lt;=</span> <span class="nv">last_edge</span><span class="ss">)</span>
+<span class="nv">C</span>:\<span class="nv">Users</span>\<span class="nv">Scott</span>\<span class="nv">Anaconda3</span>\<span class="nv">lib</span>\<span class="nv">site</span><span class="o">-</span><span class="nv">packages</span>\<span class="nv">statsmodels</span>\<span class="nv">nonparametric</span>\<span class="nv">kde</span>.<span class="nv">py</span>:<span class="mi">447</span>: <span class="nv">RuntimeWarning</span>: <span class="nv">invalid</span> <span class="nv">value</span> <span class="nv">encountered</span> <span class="nv">in</span> <span class="nv">greater</span>
+  <span class="nv">X</span> <span class="o">=</span> <span class="nv">X</span>[<span class="nv">np</span>.<span class="nv">logical_and</span><span class="ss">(</span><span class="nv">X</span> <span class="o">&gt;</span> <span class="nv">clip</span>[<span class="mi">0</span>], <span class="nv">X</span> <span class="o">&lt;</span> <span class="nv">clip</span>[<span class="mi">1</span>]<span class="ss">)</span>] # <span class="nv">won</span><span class="s1">&#39;</span><span class="s">t work for two columns.</span>
+<span class="nv">C</span>:\<span class="nv">Users</span>\<span class="nv">Scott</span>\<span class="nv">Anaconda3</span>\<span class="nv">lib</span>\<span class="nv">site</span><span class="o">-</span><span class="nv">packages</span>\<span class="nv">statsmodels</span>\<span class="nv">nonparametric</span>\<span class="nv">kde</span>.<span class="nv">py</span>:<span class="mi">447</span>: <span class="nv">RuntimeWarning</span>: <span class="nv">invalid</span> <span class="nv">value</span> <span class="nv">encountered</span> <span class="nv">in</span> <span class="nv">less</span>
+  <span class="nv">X</span> <span class="o">=</span> <span class="nv">X</span>[<span class="nv">np</span>.<span class="nv">logical_and</span><span class="ss">(</span><span class="nv">X</span> <span class="o">&gt;</span> <span class="nv">clip</span>[<span class="mi">0</span>], <span class="nv">X</span> <span class="o">&lt;</span> <span class="nv">clip</span>[<span class="mi">1</span>]<span class="ss">)</span>] # <span class="nv">won</span><span class="s1">&#39;</span><span class="s">t work for two columns.</span>
+
+
+
+
+
+<span class="o">&lt;</span><span class="nv">matplotlib</span>.<span class="nv">axes</span>.<span class="nv">_subplots</span>.<span class="nv">AxesSubplot</span> <span class="nv">at</span> <span class="mi">0</span><span class="nv">x24a57e32358</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_11_2.png"></p>
+<p>The distribution makes sense, because I would expect the vast majority of incidents to involve those between 20 and 30 years old.</p>
+<p>This column of data was rather interesting to me. I was very curious to see how many of the cases involved people showing signs of mental illness. I am not sure though on what constitutes a sign of mental illness.</p>
+<div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;signs_of_mental_illness&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">mental</span><span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;signs_of_mental_illness&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">mental</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_14_0.png"></p>
+<div class="highlight"><pre><span></span><span class="k">False</span>    <span class="mi">77</span><span class="p">.</span><span class="mi">548006</span>
+<span class="k">True</span>     <span class="mi">22</span><span class="p">.</span><span class="mi">451994</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">signs_of_mental_illness</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+
+
+<p>While clearly not the majority, 22.45% of fatal police shootings involving people showing signs of mental illness is quite significant.</p>
+<p>Another group of data offered by the dataset lets you know whether or not a bodycam was used. I think it may be interesting to view this in respect to time to see if they are being used more as they have been longer available.</p>
+<div class="highlight"><pre><span></span><span class="n">camera</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">camera</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">camera</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;2015&#39;</span><span class="p">,</span><span class="s1">&#39;2016&#39;</span><span class="p">,</span><span class="s1">&#39;2017&#39;</span><span class="p">,</span><span class="s1">&#39;2018&#39;</span><span class="p">,</span><span class="s1">&#39;2019&#39;</span><span class="p">]:</span>
+    <span class="n">camera</span><span class="p">[</span><span class="n">year</span><span class="p">]</span> <span class="o">=</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;body_camera&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+<span class="n">camera</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">camera</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">camera</span><span class="p">[</span><span class="bp">True</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Percentage of Incidents With Bodycam&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_17_0.png"></p>
+<p>I checked both the number of incidents with bodycams used and percentage (graphed here) and the graphs had the same shape. 2016 saw the largest total and percentage use with a drop off happening after. I want to say that usage is now rising back up, but there is not enough years to say there is a trend. I would be interested to know the general availability of a body cameras to police in United States and compare it to the 10-15% usage seen between 2016 and 2019.</p>
+<p>The next data in the file I want to investigate is the column that lists the ethnicities of those involved.</p>
+<div class="highlight"><pre><span></span><span class="n">count</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">count</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">count</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">count</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Ethnicity&#39;</span><span class="p">,</span><span class="s1">&#39;Percentage&#39;</span><span class="p">]</span>
+<span class="n">order</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;White&#39;</span><span class="p">,</span><span class="s1">&#39;Black&#39;</span><span class="p">,</span><span class="s1">&#39;Hispanic&#39;</span><span class="p">,</span><span class="s1">&#39;Asian&#39;</span><span class="p">,</span><span class="s1">&#39;Native&#39;</span><span class="p">,</span><span class="s1">&#39;Other&#39;</span><span class="p">]</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Ethnicity&#39;</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;Percentage&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">count</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;colorblind&#39;</span><span class="p">,</span> <span class="n">hue_order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_20_0.png"></p>
+<p>This is the break down of fatalities per each race categorie. This information is not too helpful without overall U.S. population ethnicity data.</p>
+<div class="highlight"><pre><span></span><span class="n">quick</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;C:/Users/Scott/Downloads/QuickFacts Jul-16-2020.csv&#39;</span><span class="p">)</span>
+<span class="n">pop_data</span> <span class="o">=</span> <span class="n">quick</span><span class="p">[</span><span class="s1">&#39;United States&#39;</span><span class="p">][</span><span class="mi">9</span><span class="p">:</span><span class="mi">16</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">)</span>
+<span class="n">pop_data</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Black&#39;</span><span class="p">,</span> <span class="s1">&#39;Native&#39;</span><span class="p">,</span> <span class="s1">&#39;Asian&#39;</span><span class="p">,</span> <span class="s1">&#39;Native Hawaiian&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">,</span> <span class="s1">&#39;Hispanic&#39;</span><span class="p">,</span> <span class="s1">&#39;White&#39;</span><span class="p">]</span>
+<span class="n">pop_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pop_data</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">pop_data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Ethnicity&#39;</span><span class="p">,</span><span class="s1">&#39;Percentage&#39;</span><span class="p">]</span>
+<span class="n">pop_data</span><span class="p">[</span><span class="s1">&#39;Percentage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">pop_data</span><span class="p">[</span><span class="s1">&#39;Percentage&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">))</span><span class="o">/</span><span class="mi">100</span>
+<span class="n">pop_data</span><span class="p">[</span><span class="s1">&#39;Percentage&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pop_data</span><span class="p">[</span><span class="s1">&#39;Percentage&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pop_data</span><span class="p">[</span><span class="s1">&#39;Percentage&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">pop_data</span><span class="o">=</span><span class="n">pop_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Ethnicity&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Percentage&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">pop_data</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;colorblind&#39;</span><span class="p">,</span><span class="n">hue_order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">Scott</span>\<span class="n">Anaconda3</span>\<span class="n">lib</span>\<span class="n">site</span><span class="o">-</span><span class="n">packages</span>\<span class="n">ipykernel_launcher</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">7</span><span class="p">:</span> <span class="n">SettingWithCopyWarning</span><span class="p">:</span> 
+<span class="n">A</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">trying</span> <span class="n">to</span> <span class="n">be</span> <span class="nb">set</span> <span class="n">on</span> <span class="n">a</span> <span class="n">copy</span> <span class="n">of</span> <span class="n">a</span> <span class="nb">slice</span> <span class="kn">from</span> <span class="nn">a</span> <span class="nn">DataFrame</span>
+
+<span class="n">See</span> <span class="n">the</span> <span class="n">caveats</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">documentation</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">pandas</span><span class="o">.</span><span class="n">pydata</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">pandas</span><span class="o">-</span><span class="n">docs</span><span class="o">/</span><span class="n">stable</span><span class="o">/</span><span class="n">indexing</span><span class="o">.</span><span class="n">html</span><span class="c1">#indexing-view-versus-copy</span>
+  <span class="kn">import</span> <span class="nn">sys</span>
+
+
+
+
+
+<span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x24a582b9e10</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_22_2.png"></p>
+<p>To make the changes more easily seen I want to graph the differences in percentage.</p>
+<div class="highlight"><pre><span></span><span class="n">pop_data</span><span class="o">=</span><span class="n">pop_data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Ethnicity&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Ethnicity&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">agg</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([])</span>
+<span class="n">agg</span><span class="p">[</span><span class="s1">&#39;Ethnicity&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">count</span><span class="p">[</span><span class="s1">&#39;Ethnicity&#39;</span><span class="p">]</span>
+<span class="n">agg</span><span class="p">[</span><span class="s1">&#39;Percentage Change&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span><span class="p">[</span><span class="s1">&#39;Percentage&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">pop_data</span><span class="p">[</span><span class="s1">&#39;Percentage&#39;</span><span class="p">])</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Ethnicity&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Percentage Change&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">agg</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Black&#39;</span><span class="p">,</span><span class="s1">&#39;Native&#39;</span><span class="p">,</span><span class="s1">&#39;Hispanic&#39;</span><span class="p">,</span><span class="s1">&#39;Other&#39;</span><span class="p">,</span> <span class="s1">&#39;Asian&#39;</span><span class="p">,</span><span class="s1">&#39;White&#39;</span><span class="p">],</span><span class="n">palette</span><span class="o">=</span><span class="s1">&#39;colorblind&#39;</span><span class="p">,</span><span class="n">hue_order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_24_0.png"></p>
+<p>Here you can see the inequitys with black, white, and asian police involved fatality percents to population percents.</p>
+<div class="highlight"><pre><span></span><span class="n">us_pop</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;C:/Users/Scott/Downloads/nst-est2019-01.xlsx&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">skipfooter</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">us_pop</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">us_pop</span><span class="p">)</span>
+<span class="n">us_pop</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span> <span class="n">us_pop</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;str&#39;</span><span class="p">)</span>
+<span class="n">yearly</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">yearly</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">yearly</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+<span class="n">pop_data</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pop_data</span><span class="p">[</span><span class="s1">&#39;Ethnicity&#39;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;2015&#39;</span><span class="p">,</span><span class="s1">&#39;2016&#39;</span><span class="p">,</span><span class="s1">&#39;2017&#39;</span><span class="p">,</span><span class="s1">&#39;2018&#39;</span><span class="p">,</span><span class="s1">&#39;2019&#39;</span><span class="p">]:</span>
+    <span class="n">yearly</span><span class="p">[</span><span class="n">year</span><span class="p">]</span> <span class="o">=</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">year</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">/</span><span class="n">us_pop</span><span class="p">[</span><span class="n">year</span><span class="p">][</span><span class="s1">&#39;United States&#39;</span><span class="p">])</span>
+<span class="n">yearly</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">yearly</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">race</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
+    <span class="n">yearly</span><span class="p">[</span><span class="n">race</span><span class="p">]</span><span class="o">=</span> <span class="p">(</span><span class="n">yearly</span><span class="p">[</span><span class="n">race</span><span class="p">]</span><span class="o">/</span><span class="n">pop_data</span><span class="p">[</span><span class="s1">&#39;Percentage&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">race</span><span class="p">])</span><span class="o">*</span><span class="mi">100</span>
+
+<span class="n">averages</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">averages</span><span class="o">=</span> <span class="p">(</span><span class="n">yearly</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o">/</span><span class="mi">5</span>
+<span class="n">averages</span><span class="o">=</span><span class="n">averages</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">averages</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Ethnicity&#39;</span><span class="p">,</span> <span class="s1">&#39;Percent of Population&#39;</span><span class="p">]</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Ethnicity&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Percent of Population&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">averages</span><span class="p">,</span><span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;colorblind&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="p">.</span><span class="n">axes</span><span class="p">.</span><span class="n">_subplots</span><span class="p">.</span><span class="n">AxesSubplot</span> <span class="k">at</span> <span class="mi">0</span><span class="n">x24a583e0ac8</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_26_1.png"></p>
+<p>Here I calculated the percentage of those killed against the overall population percentage per ethnicity. This graph show that in general a little over 2 in every million people who are white in the U.S. get killed every year. This graph shows that the odds in the last 5 years averaged of a black person getting killed by the police is over double that of a white person. This data is imperfect since the ethnicity percent data I used was from the 2010 census, but I believe it is good enough to show general trends with a small degree of error.</p>
+<div class="highlight"><pre><span></span><span class="n">census</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;C:/Users/Scott/Downloads/nst-est2019-01.xlsx&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">skipfooter</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">12</span><span class="p">],</span> <span class="n">index_col</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">census</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">census</span><span class="p">)</span>
+<span class="n">census</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;2019 Pop&#39;</span><span class="p">]</span>
+<span class="n">census</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">census</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">pop1</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">states</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;AK&#39;</span><span class="p">:</span> <span class="s1">&#39;Alaska&#39;</span><span class="p">,</span><span class="s1">&#39;AL&#39;</span><span class="p">:</span> <span class="s1">&#39;Alabama&#39;</span><span class="p">,</span><span class="s1">&#39;AR&#39;</span><span class="p">:</span> <span class="s1">&#39;Arkansas&#39;</span><span class="p">,</span><span class="s1">&#39;AZ&#39;</span><span class="p">:</span> <span class="s1">&#39;Arizona&#39;</span><span class="p">,</span><span class="s1">&#39;CA&#39;</span><span class="p">:</span> <span class="s1">&#39;California&#39;</span><span class="p">,</span><span class="s1">&#39;CO&#39;</span><span class="p">:</span> <span class="s1">&#39;Colorado&#39;</span><span class="p">,</span><span class="s1">&#39;CT&#39;</span><span class="p">:</span> <span class="s1">&#39;Connecticut&#39;</span><span class="p">,</span><span class="s1">&#39;DC&#39;</span><span class="p">:</span> <span class="s1">&#39;District of Columbia&#39;</span><span class="p">,</span><span class="s1">&#39;DE&#39;</span><span class="p">:</span> <span class="s1">&#39;Delaware&#39;</span><span class="p">,</span><span class="s1">&#39;FL&#39;</span><span class="p">:</span> <span class="s1">&#39;Florida&#39;</span><span class="p">,</span><span class="s1">&#39;GA&#39;</span><span class="p">:</span> <span class="s1">&#39;Georgia&#39;</span><span class="p">,</span><span class="s1">&#39;HI&#39;</span><span class="p">:</span> <span class="s1">&#39;Hawaii&#39;</span><span class="p">,</span><span class="s1">&#39;IA&#39;</span><span class="p">:</span> <span class="s1">&#39;Iowa&#39;</span><span class="p">,</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span> <span class="s1">&#39;Idaho&#39;</span><span class="p">,</span><span class="s1">&#39;IL&#39;</span><span class="p">:</span> <span class="s1">&#39;Illinois&#39;</span><span class="p">,</span><span class="s1">&#39;IN&#39;</span><span class="p">:</span> <span class="s1">&#39;Indiana&#39;</span><span class="p">,</span><span class="s1">&#39;KS&#39;</span><span class="p">:</span> <span class="s1">&#39;Kansas&#39;</span><span class="p">,</span><span class="s1">&#39;KY&#39;</span><span class="p">:</span> <span class="s1">&#39;Kentucky&#39;</span><span class="p">,</span><span class="s1">&#39;LA&#39;</span><span class="p">:</span> <span class="s1">&#39;Louisiana&#39;</span><span class="p">,</span><span class="s1">&#39;MA&#39;</span><span class="p">:</span> <span class="s1">&#39;Massachusetts&#39;</span><span class="p">,</span><span class="s1">&#39;MD&#39;</span><span class="p">:</span> <span class="s1">&#39;Maryland&#39;</span><span class="p">,</span><span class="s1">&#39;ME&#39;</span><span class="p">:</span> <span class="s1">&#39;Maine&#39;</span><span class="p">,</span><span class="s1">&#39;MI&#39;</span><span class="p">:</span> <span class="s1">&#39;Michigan&#39;</span><span class="p">,</span><span class="s1">&#39;MN&#39;</span><span class="p">:</span> <span class="s1">&#39;Minnesota&#39;</span><span class="p">,</span><span class="s1">&#39;MO&#39;</span><span class="p">:</span> <span class="s1">&#39;Missouri&#39;</span><span class="p">,</span><span class="s1">&#39;MP&#39;</span><span class="p">:</span> <span class="s1">&#39;Northern Mariana Islands&#39;</span><span class="p">,</span><span class="s1">&#39;MS&#39;</span><span class="p">:</span> <span class="s1">&#39;Mississippi&#39;</span><span class="p">,</span><span class="s1">&#39;MT&#39;</span><span class="p">:</span> <span class="s1">&#39;Montana&#39;</span><span class="p">,</span><span class="s1">&#39;NA&#39;</span><span class="p">:</span> <span class="s1">&#39;National&#39;</span><span class="p">,</span><span class="s1">&#39;NC&#39;</span><span class="p">:</span> <span class="s1">&#39;North Carolina&#39;</span><span class="p">,</span><span class="s1">&#39;ND&#39;</span><span class="p">:</span> <span class="s1">&#39;North Dakota&#39;</span><span class="p">,</span><span class="s1">&#39;NE&#39;</span><span class="p">:</span> <span class="s1">&#39;Nebraska&#39;</span><span class="p">,</span><span class="s1">&#39;NH&#39;</span><span class="p">:</span> <span class="s1">&#39;New Hampshire&#39;</span><span class="p">,</span><span class="s1">&#39;NJ&#39;</span><span class="p">:</span> <span class="s1">&#39;New Jersey&#39;</span><span class="p">,</span><span class="s1">&#39;NM&#39;</span><span class="p">:</span> <span class="s1">&#39;New Mexico&#39;</span><span class="p">,</span><span class="s1">&#39;NV&#39;</span><span class="p">:</span> <span class="s1">&#39;Nevada&#39;</span><span class="p">,</span><span class="s1">&#39;NY&#39;</span><span class="p">:</span> <span class="s1">&#39;New York&#39;</span><span class="p">,</span><span class="s1">&#39;OH&#39;</span><span class="p">:</span> <span class="s1">&#39;Ohio&#39;</span><span class="p">,</span><span class="s1">&#39;OK&#39;</span><span class="p">:</span> <span class="s1">&#39;Oklahoma&#39;</span><span class="p">,</span><span class="s1">&#39;OR&#39;</span><span class="p">:</span> <span class="s1">&#39;Oregon&#39;</span><span class="p">,</span><span class="s1">&#39;PA&#39;</span><span class="p">:</span> <span class="s1">&#39;Pennsylvania&#39;</span><span class="p">,</span><span class="s1">&#39;PR&#39;</span><span class="p">:</span> <span class="s1">&#39;Puerto Rico&#39;</span><span class="p">,</span><span class="s1">&#39;RI&#39;</span><span class="p">:</span> <span class="s1">&#39;Rhode Island&#39;</span><span class="p">,</span><span class="s1">&#39;SC&#39;</span><span class="p">:</span> <span class="s1">&#39;South Carolina&#39;</span><span class="p">,</span><span class="s1">&#39;SD&#39;</span><span class="p">:</span> <span class="s1">&#39;South Dakota&#39;</span><span class="p">,</span><span class="s1">&#39;TN&#39;</span><span class="p">:</span> <span class="s1">&#39;Tennessee&#39;</span><span class="p">,</span><span class="s1">&#39;TX&#39;</span><span class="p">:</span> <span class="s1">&#39;Texas&#39;</span><span class="p">,</span><span class="s1">&#39;UT&#39;</span><span class="p">:</span> <span class="s1">&#39;Utah&#39;</span><span class="p">,</span><span class="s1">&#39;VA&#39;</span><span class="p">:</span> <span class="s1">&#39;Virginia&#39;</span><span class="p">,</span><span class="s1">&#39;VI&#39;</span><span class="p">:</span> <span class="s1">&#39;Virgin Islands&#39;</span><span class="p">,</span><span class="s1">&#39;VT&#39;</span><span class="p">:</span> <span class="s1">&#39;Vermont&#39;</span><span class="p">,</span><span class="s1">&#39;WA&#39;</span><span class="p">:</span> <span class="s1">&#39;Washington&#39;</span><span class="p">,</span><span class="s1">&#39;WI&#39;</span><span class="p">:</span> <span class="s1">&#39;Wisconsin&#39;</span><span class="p">,</span><span class="s1">&#39;WV&#39;</span><span class="p">:</span> <span class="s1">&#39;West Virginia&#39;</span><span class="p">,</span><span class="s1">&#39;WY&#39;</span><span class="p">:</span> <span class="s1">&#39;Wyoming&#39;</span><span class="p">}</span>
+<span class="n">pop1</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pop1</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+<span class="n">new</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pop1</span><span class="p">,</span> <span class="n">census</span><span class="p">],</span> <span class="n">join</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">new</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Incidents per State&#39;</span><span class="p">,</span> <span class="s1">&#39;2019 Pop&#39;</span><span class="p">]</span>
+<span class="n">fig</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;Incidents per State&#39;</span> <span class="p">,</span><span class="n">y</span> <span class="o">=</span><span class="s1">&#39;2019 Pop&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">new</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_28_0.png"></p>
+<p>The relationship looks really linear with the larger the population, the larger amount of fatal police shootings. There is one state that appears to be a bit of an outlier and that is the state with a population of approximately 2,000,000 and around 100 fatal police shootings.</p>
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">census</span><span class="p">[</span><span class="s1">&#39;2019 Pop&#39;</span><span class="p">][(</span><span class="n">census</span><span class="p">[</span><span class="s1">&#39;2019 Pop&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">1800000</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">census</span><span class="p">[</span><span class="s1">&#39;2019 Pop&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">2000000</span><span class="p">)])</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">West</span>
+<span class="n">Nebraska</span>    <span class="mi">1934408</span>
+<span class="n">Name</span><span class="p">:</span> <span class="mi">2019</span> <span class="n">Pop</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
+
+
+<p>The state with the relatively low fatal shooting to state population ratio is Nebraska. </p>
+<p>Next I wanted to look at the background of the individuals who were classified as unarmed. </p>
+<div class="highlight"><pre><span></span><span class="n">unarmed</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;armed&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;unarmed&#39;</span>
+<span class="n">unarmed_data1</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">][</span><span class="n">unarmed</span><span class="p">]</span>
+<span class="n">unarmed_yearly</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">unarmed_yearly</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">unarmed_yearly</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;2015&#39;</span><span class="p">,</span><span class="s1">&#39;2016&#39;</span><span class="p">,</span><span class="s1">&#39;2017&#39;</span><span class="p">,</span><span class="s1">&#39;2018&#39;</span><span class="p">,</span><span class="s1">&#39;2019&#39;</span><span class="p">]:</span>
+    <span class="n">unarmed_yearly</span><span class="p">[</span><span class="n">year</span><span class="p">]</span> <span class="o">=</span><span class="p">(</span><span class="n">unarmed_data1</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">/</span><span class="n">us_pop</span><span class="p">[</span><span class="n">year</span><span class="p">][</span><span class="s1">&#39;United States&#39;</span><span class="p">])</span>
+<span class="n">unarmed_yearly</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">unarmed_yearly</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">race</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
+    <span class="n">unarmed_yearly</span><span class="p">[</span><span class="n">race</span><span class="p">]</span><span class="o">=</span> <span class="p">(</span><span class="n">unarmed_yearly</span><span class="p">[</span><span class="n">race</span><span class="p">]</span><span class="o">/</span><span class="n">pop_data</span><span class="p">[</span><span class="s1">&#39;Percentage&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">race</span><span class="p">])</span><span class="o">*</span><span class="mi">100</span>
+
+<span class="n">unarmed_averages</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">unarmed_averages</span><span class="o">=</span> <span class="p">(</span><span class="n">unarmed_yearly</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o">/</span><span class="mi">5</span>
+<span class="n">unarmed_averages</span><span class="o">=</span><span class="n">unarmed_averages</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">unarmed_averages</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Ethnicity&#39;</span><span class="p">,</span> <span class="s1">&#39;Percent of Population&#39;</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Ethnicity&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Percent of Population&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">unarmed_averages</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;colorblind&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Percent of Total Population Killed By the Police and Unarmed&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="nb">Text</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Percent of Total Population Killed By the Police and Unarmed&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_33_1.png"></p>
+<p>This graph shows that again a disproportionate number of deaths of those found to be unarmed have occured to black people at a rate five times that of white people.</p>
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+  </div>
+  <div class="tag-cloud">
+    <p>
+    </p>
+  </div>
+
+
+
+
+
+</article>
+
+    <footer>
+<p>&copy;  </p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Scott Hohenwater's Data Blog ",
+  "url" : "https://shohenwater.github.io",
+  "image": "",
+  "description": ""
+}
+</script>
+
+
+</body>
+</html>
