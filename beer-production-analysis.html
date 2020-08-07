@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="" />
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://shohenwater.github.io/theme/stylesheet/style.min.css">
+
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="https://shohenwater.github.io/theme/pygments/github.min.css">
+
+
+  <link rel="stylesheet" type="text/css" href="https://shohenwater.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://shohenwater.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://shohenwater.github.io/theme/font-awesome/css/solid.css">
+
+
+
+
+
+
+
+<meta name="author" content="Scott Hohenwater" />
+<meta name="description" content="I found this data set from the US Department of the Treasury Alcohol and Tobacco Tax and Trade Bureau that shows the volume of beer produced in each state per year (2008-2019) import requests import numpy as np import matplotlib.pyplot as plt import pandas as pd import seaborn as …" />
+<meta name="keywords" content="">
+
+
+<meta property="og:site_name" content="Scott Hohenwater's Data Blog"/>
+<meta property="og:title" content="Beer Production Analysis"/>
+<meta property="og:description" content="I found this data set from the US Department of the Treasury Alcohol and Tobacco Tax and Trade Bureau that shows the volume of beer produced in each state per year (2008-2019) import requests import numpy as np import matplotlib.pyplot as plt import pandas as pd import seaborn as …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://shohenwater.github.io/beer-production-analysis.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2020-07-28 00:00:00-05:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://shohenwater.github.io/author/scott-hohenwater.html">
+<meta property="article:section" content="Projects"/>
+<meta property="og:image" content="">
+
+  <title>Scott Hohenwater's Data Blog &ndash; Beer Production Analysis</title>
+
+</head>
+<body class="light-theme">
+  <aside>
+    <div>
+      <a href="https://shohenwater.github.io">
+        <img src="https://shohenwater.github.io/theme/img/profile.png" alt="" title="">
+      </a>
+
+      <h1>
+        <a href="https://shohenwater.github.io"></a>
+      </h1>
+
+
+
+      <nav>
+        <ul class="list">
+
+
+              <li>
+                <a target="_self"
+                   href="https://shohenwater.github.io/pages/about.html#about">
+                  About
+                </a>
+              </li>
+
+        </ul>
+      </nav>
+
+      <ul class="social">
+          <li>
+            <a  class="sc-LinkedIn" href="https://www.linkedin.com/in/scotthohenwater/" target="_blank">
+              <i class="fab fa-LinkedIn"></i>
+            </a>
+          </li>
+      </ul>
+    </div>
+
+  </aside>
+  <main>
+
+
+<article class="single">
+  <header>
+      
+    <h1 id="beer-production-analysis">Beer Production Analysis</h1>
+    <p>
+      Posted on Tue 28 July 2020 in <a href="https://shohenwater.github.io/category/projects.html">Projects</a>
+
+    </p>
+  </header>
+
+
+  <div>
+    <p>I found this data set from the US Department of the Treasury Alcohol and Tobacco Tax and Trade Bureau that shows the volume of beer produced in each state per year (2008-2019)</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
+<span class="n">bottles</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;https://www.ttb.gov/images/pdfs/statistics/aggregated/aggr-data-beer_2008-2019.xlsx&#39;</span><span class="p">,</span><span class="n">skiprows</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">barrels</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;https://www.ttb.gov/images/pdfs/statistics/aggregated/aggr-data-beer_2008-2019.xlsx&#39;</span><span class="p">,</span><span class="n">skiprows</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">on_premise</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;https://www.ttb.gov/images/pdfs/statistics/aggregated/aggr-data-beer_2008-2019.xlsx&#39;</span><span class="p">,</span><span class="n">skiprows</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">data_group</span> <span class="o">=</span> <span class="p">[</span><span class="n">bottles</span><span class="p">,</span> <span class="n">barrels</span><span class="p">,</span> <span class="n">on_premise</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data_group</span><span class="p">:</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;str&#39;</span><span class="p">)</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;**&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>I wanted to see the growth of craft breweries most of which (barring any state and local regulations) offer on premise drinking. Depending on the size of the brewery most of their beer produced may be consumed on premise.</p>
+<div class="highlight"><pre><span></span><span class="n">temp</span><span class="o">=</span> <span class="n">on_premise</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">on_premise</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Barrels (Volume)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Barrels Used For On Premise Use&#39;</span><span class="p">)</span>
+<span class="n">delta</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">):</span>
+    <span class="n">delta</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">temp</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">][</span><span class="n">num</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">temp</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">][</span><span class="n">num</span><span class="p">])</span>
+<span class="n">delta</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+<span class="n">delta</span><span class="o">=</span><span class="n">delta</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">11</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Yearly Change&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">delta</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">12</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">13</span><span class="p">],</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="png" src="Beer_Analysis_files/Beer_Analysis_4_0.png"></p>
+<p>In 2008 the number of barrels for on premise use around 500,000 barrels a year. In 2015 the start of the craft beer boom occured with a growth of about 60,000 barrels and growth in on premise drinking has continued to grow. In the yearly growth graph you can see that the growth has started to slow down, showing a possible indication that craft beer may be heading to its maximum in several years.</p>
+<p>I was curious to check which states had the largest increases in on premise drinking so I calculated the differences between 2008 and 2019.</p>
+<div class="highlight"><pre><span></span><span class="n">on_premise</span><span class="p">[</span><span class="s1">&#39;2008&#39;</span><span class="p">][</span><span class="s1">&#39;MS&#39;</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">diff</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">on_premise</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">52</span><span class="p">]:</span>
+    <span class="n">diff</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">on_premise</span><span class="p">[</span><span class="s1">&#39;2019&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="o">-</span> <span class="n">on_premise</span><span class="p">[</span><span class="s1">&#39;2008&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">])</span>
+<span class="n">diff</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+<span class="n">diff</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="n">on_premise</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">52</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="nv">C</span>:\<span class="nv">Users</span>\<span class="nv">Scott</span>\<span class="nv">Anaconda3</span>\<span class="nv">lib</span>\<span class="nv">site</span><span class="o">-</span><span class="nv">packages</span>\<span class="nv">ipykernel_launcher</span>.<span class="nv">py</span>:<span class="mi">1</span>: <span class="nv">SettingWithCopyWarning</span>: 
+<span class="nv">A</span> <span class="nv">value</span> <span class="nv">is</span> <span class="nv">trying</span> <span class="nv">to</span> <span class="nv">be</span> <span class="nv">set</span> <span class="nv">on</span> <span class="nv">a</span> <span class="nv">copy</span> <span class="nv">of</span> <span class="nv">a</span> <span class="nv">slice</span> <span class="nv">from</span> <span class="nv">a</span> <span class="nv">DataFrame</span>
+
+<span class="nv">See</span> <span class="nv">the</span> <span class="nv">caveats</span> <span class="nv">in</span> <span class="nv">the</span> <span class="nv">documentation</span>: <span class="nv">http</span>:<span class="o">//</span><span class="nv">pandas</span>.<span class="nv">pydata</span>.<span class="nv">org</span><span class="o">/</span><span class="nv">pandas</span><span class="o">-</span><span class="nv">docs</span><span class="o">/</span><span class="nv">stable</span><span class="o">/</span><span class="nv">indexing</span>.<span class="nv">html</span>#<span class="nv">indexing</span><span class="o">-</span><span class="nv">view</span><span class="o">-</span><span class="nv">versus</span><span class="o">-</span><span class="nv">copy</span>
+  <span class="s2">&quot;&quot;&quot;</span><span class="s">Entry point for launching an IPython kernel.</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">diff</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Barrels (Volume)&#39;</span><span class="p">,</span><span class="s1">&#39;State&#39;</span><span class="p">]</span>
+<span class="n">diff</span><span class="o">=</span><span class="n">diff</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Barrels (Volume)&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">top10</span><span class="o">=</span><span class="n">diff</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Barrels (Volume)&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">top10</span><span class="p">)</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Top 10 States in On Premise Growth 2008-2019&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="png" src="Beer_Analysis_files/Beer_Analysis_8_0.png"></p>
+<p>The top states in population make the list, but so do some interesting states like North Carolina, Virginia, and Colorado showing stronger than their population ranks.</p>
+<p>I figured I should also check to see the states with the smallest growth.</p>
+<div class="highlight"><pre><span></span><span class="n">bottom10</span><span class="o">=</span><span class="n">diff</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Barrels (Volume)&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">bottom10</span><span class="p">)</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Bottom 10 States in On Premise Growth&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="png" src="Beer_Analysis_files/Beer_Analysis_11_0.png"></p>
+<p>Here we can see that states with lower populations are consistent, but some states with higher populations did beat out others like Nevada and Kansas at the top of the list.</p>
+<p>The next thing I wanted to look at was at how the beer industry was doing overall. With the data I looked at the total volume of beer being produced over the last decade.</p>
+<div class="highlight"><pre><span></span><span class="n">temp1</span><span class="o">=</span><span class="n">bottles</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="n">temp2</span><span class="o">=</span><span class="n">barrels</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">temp1</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">on_premise</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Barrels (Volume)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Volume of Beer Bottled or Canned&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">temp2</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">on_premise</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Barrels (Volume)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Volume of Beer Kegged or Barreled&#39;</span><span class="p">)</span>
+
+<span class="n">temp_total</span><span class="o">=</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">])</span><span class="o">+</span><span class="n">temp1</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">temp2</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">temp_total</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">on_premise</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Barrels (Volume)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Total Volume in Barrels&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="png" src="Beer_Analysis_files/Beer_Analysis_14_0.png"></p>
+<p>The amount of beer bottled and canned has had a consistent decline since 2008, but the volume kegged and barreled really started to fall during 2014. This the same time which on premise drinking started heavily rising so I would not be surprised if there was a correlation between the two events. In the third graph I plotted the total volume of beer that is bottled, kegged, and used on premise to see overall how much beer was being made and if the rise in on premise use would limit the drop in volume of kegged and bottled beer, but overall it did not significantly change the pattern. </p>
+<p>This could be explained in a couple of ways. If craft beer is the thing causing this downturn in production then it could be from the fact that it costs significantly more than the past mainstays. People only have so much money and probably do not wish to spend too much on a non-necessity like alcohol, therefore buying more expensive beer but less volume than before. Another way that craft beer would affect this is that it also tends to have a higher amount of alcohol in it. An average Budweiser or Miller Beer will usually have an ABV betweeen 4-5%, and a large amount of craft beer will be around 8% getting to near 20% for some on the extreme. So drinking a smaller volume of craft beer can give you the experience of drinking many more traditionally popular beers. </p>
+<p>There could also be another factor such as wine or cocktails also becoming more popular in this time or a trend to live healthier lifestyles. I believe though that craft beer has atleast played some part in this decline in overall volume produced. One way to check is to compare the growth in on premise sales to the growth or decline in kegged beer.</p>
+<div class="highlight"><pre><span></span><span class="n">diff1</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">barrels</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">52</span><span class="p">]:</span>
+    <span class="n">diff1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">barrels</span><span class="p">[</span><span class="s1">&#39;2019&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="o">-</span> <span class="n">barrels</span><span class="p">[</span><span class="s1">&#39;2008&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">])</span>
+<span class="n">diff1</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">diff1</span><span class="p">)</span>
+<span class="n">diff1</span><span class="o">=</span><span class="n">diff1</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">diff1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">barrels</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">52</span><span class="p">]</span>
+<span class="n">diff1</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Change In Kegged Beer In Barrels (Volume)&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">]</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">diff1</span> <span class="p">[</span><span class="s1">&#39;Change In Kegged Beer In Barrels (Volume)&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Distrobution Of Change In Kegged/Barreled Beer&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="nb">Text</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Distrobution Of Change In Kegged/Barreled Beer&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="png" src="Beer_Analysis_files/Beer_Analysis_18_1.png"></p>
+<p>By far most states had near 0 change in volume of beer for kegged beer.</p>
+<div class="highlight"><pre><span></span><span class="n">diff1</span><span class="o">=</span> <span class="n">diff1</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Change In Kegged Beer In Barrels (Volume)&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">trouble</span><span class="o">=</span><span class="n">diff1</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Change In Kegged Beer In Barrels (Volume)&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">trouble</span><span class="p">)</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Bottom 10 States in Barrel Growth&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="nb">Text</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Bottom 10 States in Barrel Growth&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="png" src="Beer_Analysis_files/Beer_Analysis_20_1.png"></p>
+<p>Four out of the five largest changes came from states that were in the top ten states with on premise drinking growth. Missouri is the only one that was not, and it lost a very significant amount so let's check out where it ranked in.</p>
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">diff</span><span class="p">[</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;State&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;MO&#39;</span><span class="p">])</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>    <span class="n">Barrels</span> <span class="p">(</span><span class="n">Volume</span><span class="p">)</span> <span class="k">State</span>
+<span class="mi">24</span>           <span class="mi">19263</span><span class="p">.</span><span class="mi">6</span>    <span class="n">MO</span>
+</pre></div>
+
+
+<p>Missouri was the 34th ranked state for on premise use, but also had the second largest decline in keg use. Considering it is the home of Budweiser, this could show that they are amoung the hardest hit. Along with this Budweiser idea, Coors out of Colorado may be the reason they are so high on the chart.</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+    </p>
+  </div>
+
+
+
+
+
+</article>
+
+    <footer>
+<p>&copy;  </p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Scott Hohenwater's Data Blog ",
+  "url" : "https://shohenwater.github.io",
+  "image": "",
+  "description": ""
+}
+</script>
+
+
+</body>
+</html>
