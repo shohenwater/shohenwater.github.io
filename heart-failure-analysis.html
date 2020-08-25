@@ -109,7 +109,7 @@
 </pre></div>
 
 
-<p>A little cleaning.</p>
+<p>A little cleaning of the data.</p>
 <div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
 <span class="n">booleans</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Anaemia&#39;</span><span class="p">,</span><span class="s1">&#39;Diabetes&#39;</span><span class="p">,</span><span class="s1">&#39;High blood pressure&#39;</span><span class="p">,</span><span class="s1">&#39;Smoking&#39;</span><span class="p">]</span>
 
@@ -156,7 +156,7 @@
 </pre></div>
 
 
-<p><img alt="png" src="heart_analysis_files/output_6_1.png"></p>
+<p><img alt="png" src="heart disease files/output_6_1.png"></p>
 <p>The data seems to be normally distributed with some right skew. I am curious as to how many of the 299 patients in the data set were involved in this graph. </p>
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">dead</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
 </pre></div>
@@ -180,7 +180,7 @@
 </pre></div>
 
 
-<p><img alt="png" src="heart_analysis_files/output_10_0.png"></p>
+<p><img alt="png" src="heart disease files/output_10_0.png"></p>
 <p>I chose to use the mortality rate for five years at a time to smooth out the data and fill in the gaps where no or a small number of patients were of that age. The point at 50 then is the mortality rate before their follow up appointment of those aged 50 through 55. From this graph you can see that as the age of the patient goes up the likelihood of not making the follow up appointment is greater.</p>
 <p>One thing to check is how well the doctors were able to see how their patients were doing. To do this I want to look at the distribution of follow up visit length for those who were able to make it to their follow up visit against the length for those who did not.</p>
 <div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">][</span><span class="n">dead</span><span class="p">],</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -189,7 +189,7 @@
 </pre></div>
 
 
-<p><img alt="png" src="heart_analysis_files/output_13_0.png"></p>
+<p><img alt="png" src="heart disease files/output_13_0.png"></p>
 <p>You can see that the doctors were able to do a pretty good job having the people who ended up passing having the shortest time to follow up. The tough part is that the longer time to follow up the more time there is for an fatal incident to occur. That could be why the distribution of follow up visit delay for those who passed makes an increase as time gets larger to look possibly bimodal.</p>
 <p>Since it appears that the doctors were able to identify the patients in the greatest of help, it is a good idea to try to reverse engineer what caused the doctors to have the patients come back for a follow up in shorter time. </p>
 <div class="highlight"><pre><span></span><span class="n">short_follow</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">50</span>
@@ -228,7 +228,7 @@
 </pre></div>
 
 
-<p><img alt="png" src="heart_analysis_files/output_16_0.png"></p>
+<p><img alt="png" src="heart disease files/output_16_0.png"></p>
 <p>There appears to be no extreme differences of distribution immediatly obvious from these graphs. This makes sense because this dataset contains all people who have already had heart issues and are making follow up appointments. I would expect larger differences if the data set also contained people who had average heart health.</p>
 <p>Next, I want to check the correlations between the different factors.</p>
 <div class="highlight"><pre><span></span><span class="n">df_corr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span><span class="s1">&#39;Ejection fraction&#39;</span><span class="p">,</span><span class="s1">&#39;Platelets&#39;</span><span class="p">,</span><span class="s1">&#39;Creatinine phosphokinase&#39;</span><span class="p">,</span><span class="s1">&#39;Serum creatinine&#39;</span><span class="p">,</span><span class="s1">&#39;Serum sodium&#39;</span><span class="p">,</span><span class="s1">&#39;Anaemia&#39;</span><span class="p">,</span><span class="s1">&#39;Smoking&#39;</span><span class="p">,</span><span class="s1">&#39;Diabetes&#39;</span><span class="p">,</span><span class="s1">&#39;Time&#39;</span><span class="p">,</span> <span class="s1">&#39;Death event&#39;</span><span class="p">])</span>
@@ -236,11 +236,26 @@
 <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">corrmatrix</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Correlation Heat Map&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">corrmatrix</span><span class="p">[[</span><span class="s1">&#39;Death event&#39;</span><span class="p">,</span><span class="s1">&#39;Time&#39;</span><span class="p">]])</span>
 </pre></div>
 
 
-<p><img alt="png" src="heart_analysis_files/output_19_0.png"></p>
-<p><img alt="png" src="heart_analysis_files/newplot.svg"></p>
+<p><img alt="png" src="heart disease files/output_19_0.png"></p>
+<div class="highlight"><pre><span></span>                          <span class="n">Death</span> <span class="n">event</span>      <span class="n">Time</span>
+<span class="n">Age</span>                          <span class="mi">0</span><span class="p">.</span><span class="mi">253729</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">224068</span>
+<span class="n">Ejection</span> <span class="n">fraction</span>           <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">268603</span>  <span class="mi">0</span><span class="p">.</span><span class="mi">041729</span>
+<span class="n">Platelets</span>                   <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">049139</span>  <span class="mi">0</span><span class="p">.</span><span class="mi">010514</span>
+<span class="n">Creatinine</span> <span class="n">phosphokinase</span>     <span class="mi">0</span><span class="p">.</span><span class="mi">062728</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">009346</span>
+<span class="n">Serum</span> <span class="n">creatinine</span>             <span class="mi">0</span><span class="p">.</span><span class="mi">294278</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">149315</span>
+<span class="n">Serum</span> <span class="n">sodium</span>                <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">195204</span>  <span class="mi">0</span><span class="p">.</span><span class="mi">087640</span>
+<span class="n">Anaemia</span>                      <span class="mi">0</span><span class="p">.</span><span class="mi">066270</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">141414</span>
+<span class="n">Smoking</span>                     <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">012623</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">022839</span>
+<span class="n">Diabetes</span>                    <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">001943</span>  <span class="mi">0</span><span class="p">.</span><span class="mi">033726</span>
+<span class="n">Time</span>                        <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">526964</span>  <span class="mi">1</span><span class="p">.</span><span class="mi">000000</span>
+<span class="n">Death</span> <span class="n">event</span>                  <span class="mi">1</span><span class="p">.</span><span class="mi">000000</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">526964</span>
+</pre></div>
+
+
 <p>I wanted to specifically focus in on the correlations of death and time till follow up appointment. The strongest correlation with death is the time till the next follow up appointment. The correlation of -0.53 shows that the information learned from the previous histogram is correct. The more time between appointments the lesser probability of death.</p>
 <p>From this table there are some factors that I would more specifically like to look in to. Namely the serum creatinine, ejection fraction, serum sodium, and time columns.</p>
 <div class="highlight"><pre><span></span><span class="n">interest</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Serum creatinine&#39;</span><span class="p">,</span><span class="s1">&#39;Ejection fraction&#39;</span><span class="p">,</span><span class="s1">&#39;Serum sodium&#39;</span><span class="p">,</span><span class="s1">&#39;Time&#39;</span><span class="p">]</span>
@@ -276,10 +291,10 @@
 </pre></div>
 
 
-<p><img alt="png" src="heart_analysis_files/output_23_0.png"></p>
-<p><img alt="png" src="heart_analysis_files/output_23_1.png"></p>
-<p><img alt="png" src="heart_analysis_files/output_23_2.png"></p>
-<p><img alt="png" src="heart_analysis_files/output_23_3.png"></p>
+<p><img alt="png" src="heart disease files/output_23_0.png"></p>
+<p><img alt="png" src="heart disease files/output_23_1.png"></p>
+<p><img alt="png" src="heart disease files/output_23_2.png"></p>
+<p><img alt="png" src="heart disease files/output_23_3.png"></p>
 <p>Each plot contains fifty percent of each column's data. The differences are from whether the data is from below or above the median or inside or outside the 25th and 75th percentiles.  </p>
 <p>Serum creatinine had a stronger mortality rate in the middle 50 percent of the data. Ejection fraction, serum sodium, and time all had higher mortality rates with the lower or outer halfs of the data. For time this makes sense because of what was learned from the histogram before.</p>
 <div class="highlight"><pre><span></span><span class="n">ejection_sums</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">101</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">101</span><span class="p">))</span>
@@ -312,7 +327,7 @@
 </pre></div>
 
 
-<p><img alt="png" src="heart_analysis_files/output_28_0.png"></p>
+<p><img alt="png" src="heart disease files/output_28_0.png"></p>
 <p>This plot acts as a two-dimensional histogram to see density of deaths by percentile. The numbers on the x-axis denote the lower percentile and y the upper percentile. If you start with 45 on the x-axis and go to 80 on the y-axis it shows that there is a relatively strong rate of death for patients that were lower than the 45th percentile or higher than the 80th percentile for heart ejection percentage.</p>
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">ejection_chart</span><span class="p">[</span><span class="mi">45</span><span class="p">][</span><span class="mi">80</span><span class="p">])</span>
 </pre></div>
