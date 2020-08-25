@@ -1,40 +1,105 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="utf-8" />
-        <title>Heart Failure Analysis</title>
-        <link rel="stylesheet" href="https://shohenwater.github.io/theme/css/main.css" />
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="" />
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://shohenwater.github.io/theme/stylesheet/style.min.css">
+
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="https://shohenwater.github.io/theme/pygments/github.min.css">
+
+
+  <link rel="stylesheet" type="text/css" href="https://shohenwater.github.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://shohenwater.github.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://shohenwater.github.io/theme/font-awesome/css/solid.css">
+
+
+
+
+
+
+
+<meta name="author" content="Scott Hohenwater" />
+<meta name="description" content="I found this data set on kaggle at https://www.kaggle.com/andrewmvd/heart-failure-clinical-data. It countains data on 299 patients with heart failure with 12 features that could possibly be used to predict mortality by heart failure. I started by initializing the data. import pandas as pd import numpy as …" />
+<meta name="keywords" content="">
+
+
+<meta property="og:site_name" content="Scott Hohenwater's Data Blog"/>
+<meta property="og:title" content="Heart Failure Analysis"/>
+<meta property="og:description" content="I found this data set on kaggle at https://www.kaggle.com/andrewmvd/heart-failure-clinical-data. It countains data on 299 patients with heart failure with 12 features that could possibly be used to predict mortality by heart failure. I started by initializing the data. import pandas as pd import numpy as …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://shohenwater.github.io/heart-failure-analysis.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2020-08-24 00:00:00-05:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://shohenwater.github.io/author/scott-hohenwater.html">
+<meta property="article:section" content="Projects"/>
+<meta property="og:image" content="">
+
+  <title>Scott Hohenwater's Data Blog &ndash; Heart Failure Analysis</title>
+
 </head>
+<body class="light-theme">
+  <aside>
+    <div>
+      <a href="https://shohenwater.github.io">
+        <img src="https://shohenwater.github.io/theme/img/profile.png" alt="" title="">
+      </a>
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="https://shohenwater.github.io/">Scott Hohenwater's Data Blog </a></h1>
-                <nav><ul>
-                    <li><a href="https://shohenwater.github.io/pages/about.html">About</a></li>
-                    <li class="active"><a href="https://shohenwater.github.io/category/misc.html">misc</a></li>
-                    <li><a href="https://shohenwater.github.io/category/projects.html">Projects</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
-<section id="content" class="body">
-  <article>
-    <header>
-      <h1 class="entry-title">
-        <a href="https://shohenwater.github.io/heart-failure-analysis.html" rel="bookmark"
-           title="Permalink to Heart Failure Analysis">Heart Failure Analysis</a></h1>
-    </header>
+      <h1>
+        <a href="https://shohenwater.github.io"></a>
+      </h1>
 
-    <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2020-08-24T00:00:00-05:00">
-                Published: Mon 24 August 2020
-        </abbr>
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://shohenwater.github.io/author/scott-hohenwater.html">Scott Hohenwater</a>
-        </address>
-<p>In <a href="https://shohenwater.github.io/category/misc.html">misc</a>.</p>
 
-</footer><!-- /.post-info -->      <p>I found this data set on kaggle at https://www.kaggle.com/andrewmvd/heart-failure-clinical-data. It countains data on 299 patients with heart failure with 12 features that could possibly be used to predict mortality by heart failure.</p>
+      <nav>
+        <ul class="list">
+
+
+              <li>
+                <a target="_self"
+                   href="https://shohenwater.github.io/pages/about.html#about">
+                  About
+                </a>
+              </li>
+
+        </ul>
+      </nav>
+
+      <ul class="social">
+          <li>
+            <a  class="sc-LinkedIn" href="https://www.linkedin.com/in/scotthohenwater/" target="_blank">
+              <i class="fab fa-LinkedIn"></i>
+            </a>
+          </li>
+      </ul>
+    </div>
+
+  </aside>
+  <main>
+
+
+<article class="single">
+  <header>
+      
+    <h1 id="heart-failure-analysis">Heart Failure Analysis</h1>
+    <p>
+      Posted on Mon 24 August 2020 in <a href="https://shohenwater.github.io/category/projects.html">Projects</a>
+
+    </p>
+  </header>
+
+
+  <div>
+    <p>I found this data set on kaggle at https://www.kaggle.com/andrewmvd/heart-failure-clinical-data. It countains data on 299 patients with heart failure with 12 features that could possibly be used to predict mortality by heart failure.</p>
 <p>I started by initializing the data.</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -388,27 +453,39 @@ if (outputEl) {{
 
 
 <p>Overall this was a fun data set to work with. It was fun to play doctor and try to find any information that could be helpful to people.</p>
-    </div><!-- /.entry-content -->
+  </div>
+  <div class="tag-cloud">
+    <p>
+    </p>
+  </div>
 
-  </article>
-</section>
-        <section id="extras" class="body">
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
 
-                            <li><a href="https://www.linkedin.com/in/scotthohenwater/">LinkedIn</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
+
+</article>
+
+    <footer>
+<p>&copy;  </p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Scott Hohenwater's Data Blog ",
+  "url" : "https://shohenwater.github.io",
+  "image": "",
+  "description": ""
+}
+</script>
+
 
 </body>
 </html>
